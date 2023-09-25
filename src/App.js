@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import './App.css';
+import Grid from './components/Grid';
+import Controls from './components/Controls';
 
 function App() {
   const[gridSize, setGridSize] = useState(11);
   const[algo, setAlgo] = useState('DFS');
+  const [gridArray, setGridArray] = useState(Array(gridSize).fill().map(() => Array(gridSize).fill(false)));
 
   const handleGridChange = (e) => {
-    gridGridSize(e.target.value);
+    setGridSize(e.target.value);
   };
 
   const handleAlgoChange = (e) => {
@@ -14,23 +17,29 @@ function App() {
   };
 
   const handlePlay = () => {
-    // logic for playing animation goes here
+    // algorithm logic here that manipulates a local copy of gridArray
+    // make a deep copy of the existing gridArray
+    let newGridArray = JSON.parse(JSON.stringify(gridArray));
+
+    console.log(newGridArray);
+
+    // Manipulate newGridArray based on your algorithm
+    // ...
+    // Update the state; React will automatically keep the frontend updated
+    setGridArray(newGridArray);
   };
 
   return (
     <div className='App'>
-      <textarea readOnly value="description of app goes here" />
-      <div>
-        <input type="number" value={gridSize} onChange={handleGridChange} />
-        <button onClick={handlePlay}>Play</button>
-      </div>
-      <div>
-        <input type="radio" value="DFS" checked={algo === 'DFS'} onChange={handleAlgoChange} />DFS
-        <input type="radio" value="BFS" checked={algo === 'BFS'} onChange={handleAlgoChange} />BFS
-      </div>
-      <div>
-        {/* grid goes here */}
-      </div>
+      <textarea readOnly value="Your explanation here..." />
+      <Controls
+        handleGridChange={handleGridChange}
+        handleAlgoChange={handleAlgoChange}
+        handlePlay={handlePlay}
+        gridSize={gridSize}
+        algo={algo}
+      />
+      <Grid gridArray={gridArray} />
     </div>
   );
 }
