@@ -4,7 +4,7 @@ import Grid from './components/Grid';
 import Controls from './components/Controls';
 
 function App() {
-  const[gridSize, setGridSize] = useState(11);
+  const[gridSize, setGridSize] = useState(21);
   const[algo, setAlgo] = useState('DFS');
   const [gridArray, setGridArray] = useState(Array(gridSize).fill().map(() => Array(gridSize).fill(false)));
 
@@ -16,17 +16,33 @@ function App() {
     setAlgo(e.target.value);
   };
 
+  const depthFirstSearch = (newGridArray, x, y, setGridArray) => {
+    if (x < 0 || x >= newGridArray[0].length || y < 0 || y >= newGridArray.length) {
+      return
+    }
+
+    // exit if already visited
+    if (newGridArray[x][y]) {
+      return
+    }
+
+    newGridArray[x][y] = true;
+
+    // update the gridArray state to cause a re-render
+    setGridArray([...newGridArray]);
+
+    setTimeout(() => {
+      depthFirstSearch(newGridArray, x+1, y, setGridArray);
+      depthFirstSearch(newGridArray, x-1, y, setGridArray);
+      depthFirstSearch(newGridArray, x, y+1, setGridArray);
+      depthFirstSearch(newGridArray, x, y-1, setGridArray);
+    }, 100);
+  }
+
   const handlePlay = () => {
-    // algorithm logic here that manipulates a local copy of gridArray
-    // make a deep copy of the existing gridArray
-    let newGridArray = JSON.parse(JSON.stringify(gridArray));
-
-    console.log(newGridArray);
-
-    // Manipulate newGridArray based on your algorithm
-    // ...
-    // Update the state; React will automatically keep the frontend updated
-    setGridArray(newGridArray);
+    // Create a cleared grid in case of replays (hitting Play a second time or more)
+    const clearedGrid = Array(gridSize).fill().map(() => Array(gridSize).fill(false));
+    depthFirstSearch(clearedGrid, 5, 5, setGridArray);
   };
 
   return (
