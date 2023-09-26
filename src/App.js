@@ -4,7 +4,7 @@ import Grid from './components/Grid';
 import Controls from './components/Controls';
 
 function App() {
-  const defaultSize = 19;
+  const defaultSize = 15;
   const[gridSize, setGridSize] = useState(defaultSize);
   const[algo, setAlgo] = useState('DFS');
   const [gridArray, setGridArray] = useState(Array(gridSize).fill().map(() => Array(gridSize).fill(false)));
@@ -35,7 +35,7 @@ function App() {
   };
 
 
-  // randomize the order of neighbor selection each time the animation is Played
+  // shuffles an array (in our case, of neighbor-finding functions)
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -43,18 +43,50 @@ function App() {
     }
   }
 
+  const breadthFirstSearch = (grid, y, x, queue) => {
+    const visited = Array(grid.length).fill().map(() => Array(grid[0].length).fill(false));
+    const toVisit = [{ y, x }];
+
+    visited[y][x] = true;
+
+    while (toVisit.length > 0) {
+      const current = toVisit.shift(); // Take the first element
+      y = current.y;
+      x = current.x;
+
+      // Push current position to the queue for later visualization
+      queue.push(current);
+
+      const directions = [
+        { dy: 1, dx: 0 },
+        { dy: -1, dx: 0 },
+        { dy: 0, dx: 1 },
+        { dy: 0, dx: -1 },
+      ];
+
+      for (const { dy, dx } of directions) {
+        const newY = y + dy;
+        const newX = x + dx;
+
+        if (newX >= 0 && newX < grid.length && newY >= 0 && newY < grid[0].length && !visited[newY][newX]) {
+          toVisit.push({ y: newY, x: newX });
+          visited[newY][newX] = true;
+        }
+      }
+    }
+  }
+
   const depthFirstSearch = (grid, y, x, queue) => {
-    // Exit if out of bounds of the image size
+    // exit if out of bounds of the image size
     if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length) {
       return;
     }
-    // Exit if this coordinate is already in the queue, thus visited
+    // exit if this coordinate is already in the queue, thus visited
     if (queue.some(coord => coord.x === x && coord.y === y)) {
       return;
     }
 
-    // Add to queue for animation later
-    queue.push({ x, y });
+    queue.push({ y, x });
 
     const directions = [
       () => depthFirstSearch(grid, y + 1, x, queue),
@@ -73,12 +105,18 @@ function App() {
 
   const handlePlay = () => {
     setIsProcessing(true);
-    const queue = [];
     const clearedGrid = Array(gridSize).fill().map(() => Array(gridSize).fill(false));
 
-    // Populate the queue
+    // create queue and figure out middle pixel (or close to it for even size)
+    const queue = [];
     const middle = Math.round((gridSize - 1) / 2)
-    depthFirstSearch(clearedGrid, middle, middle, queue);
+
+    if (algo === 'DFS') {
+      depthFirstSearch(clearedGrid, middle, middle, queue);
+    }
+    else {
+      breadthFirstSearch(clearedGrid, middle, middle, queue);
+    }
 
     let i = 0;
     function processQueue() {
@@ -129,8 +167,10 @@ function App() {
         search (DFS) and breadth-first search (BFS) can apply to it.
       </p>
       <p className='p-limited-width'>
-        This application helps visualize these search algorithms. All pixels start off as "unvisited". Then, starting
-        from a central origin pixel, we search through -- and mark as visited -- all pixels in the image.
+        This application helps visualize these search algorithms. We're not "searching" in the traditional sense. We're
+        flooding-filling the entire image from unvisited (darker color) to visited (lighter color). All pixels start off
+        as unvisited. Then, starting from a central origin pixel, we search through -- and mark as visited -- all pixels
+        in the image.
       </p>
       <p className='p-limited-width'>
         For the "line" DFS implementation, where it has a set order of traversal (e.g. always x+1 first,
