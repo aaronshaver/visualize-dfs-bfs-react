@@ -12,6 +12,7 @@ function App() {
   const [processingArray, setProcessingArray] = useState(
     Array(gridSize).fill().map(() => Array(gridSize).fill(false))
   );
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleGridSizeUpdate = (event) => {
     var newSize = parseInt(event.target.value, 10);
@@ -71,6 +72,7 @@ function App() {
   };
 
   const handlePlay = () => {
+    setIsProcessing(true);
     const queue = [];
     const clearedGrid = Array(gridSize).fill().map(() => Array(gridSize).fill(false));
 
@@ -80,8 +82,9 @@ function App() {
 
     let i = 0;
     function processQueue() {
-      // bail out if we've processed everything
+      // bail out if we've processed everything and unlock UI controls
       if (i >= queue.length) {
+        setIsProcessing(false);
         return;
       }
 
@@ -115,6 +118,7 @@ function App() {
         algo={algo}
         isRandom={isRandom}
         setIsRandom={setIsRandom}
+        isProcessing={isProcessing}
       />
       <Grid gridArray={gridArray} processingArray={processingArray} />
       <br />
