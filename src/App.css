@@ -7,3 +7,8 @@
   margin: 0 auto 20px auto;  /* Centering it horizontally but space below text */
   text-align: left; /* Aligning the text to the left */
 }
+
+.ControlsWrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}

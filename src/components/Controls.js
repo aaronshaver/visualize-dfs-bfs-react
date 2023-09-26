@@ -3,11 +3,9 @@ import React from 'react';
 
 const Controls = ({ handleGridSizeUpdate, handleAlgoChange, handlePlay, gridSize, algo, isRandom, setIsRandom, isProcessing }) => {
   return (
-    <div>
+    <div className="ControlsWrapper" style={{ textAlign: 'left' }}>
       <br />
-      Size: <input type="text" defaultValue={gridSize} onBlur={handleGridSizeUpdate} size="5" disabled={isProcessing} />
-      <br />
-      <button onClick={handlePlay} disabled={isProcessing}>Play</button>
+      Size: <input type="text" defaultValue={gridSize} onBlur={handleGridSizeUpdate} size="4" disabled={isProcessing} />
       <br />
       Algorithm:
       <label>
@@ -20,9 +18,11 @@ const Controls = ({ handleGridSizeUpdate, handleAlgoChange, handlePlay, gridSize
       </label>
       <br />
       <label>
-        Random traversal vs. fixed neighbor order:
+        Random traversal order:
         <input type="checkbox" checked={isRandom} onChange={() => setIsRandom(!isRandom)} disabled={isProcessing} />
         <br />
+      <button onClick={handlePlay} disabled={isProcessing}>Play</button>
+      <br />
       </label>
       <br />
     </div>
