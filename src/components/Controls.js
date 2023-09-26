@@ -19,7 +19,7 @@ const Controls = ({ handleGridChange, handleAlgoChange, handlePlay, gridSize, al
       </label>
       <br />
       <label>
-        Random traversal
+        Random traversal vs. set neighbor order
         <input type="checkbox" checked={isRandom} onChange={() => setIsRandom(!isRandom)} />
         <br />
       </label>

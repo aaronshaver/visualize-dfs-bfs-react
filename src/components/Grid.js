@@ -4,7 +4,7 @@ const Grid = ({ gridArray }) => {
     for (let i = 0; i < gridArray.length; i++) {
       const row = [];
       for (let j = 0; j < gridArray[i].length; j++) {
-        const color = gridArray[i][j] ? 'lightblue' : 'darkblue';
+        const color = gridArray[i][j] ? '#98C74E' : '#60A261';
         row.push(
           <div
             key={`${i}-${j}`}
@@ -12,7 +12,7 @@ const Grid = ({ gridArray }) => {
               width: '20px',
               height: '20px',
               backgroundColor: color,
-              border: '1px solid black',
+              border: '1px solid #357A5B',
             }}
           ></div>
         );
