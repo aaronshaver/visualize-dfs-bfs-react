@@ -96,6 +96,7 @@ function App() {
         setIsRandom={setIsRandom}
       />
       <Grid gridArray={gridArray} />
+      <br />
       <p className='p-limited-width'>
         For the "line" DFS implementation, where it has a set order of traversal (e.g. always x+1 first,
         then y+1, etc.), because DFS explores as far as possible before backtracking, the

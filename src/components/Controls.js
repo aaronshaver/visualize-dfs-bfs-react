@@ -4,6 +4,7 @@ import React from 'react';
 const Controls = ({ handleGridChange, handleAlgoChange, handlePlay, gridSize, algo, isRandom, setIsRandom }) => {
   return (
     <div>
+      <br />
       <input type="number" value={gridSize} onChange={handleGridChange} />
       <button onClick={handlePlay}>Play</button>
       <br />
@@ -18,9 +19,11 @@ const Controls = ({ handleGridChange, handleAlgoChange, handlePlay, gridSize, al
       </label>
       <br />
       <label>
-        Random Traversal
+        Random traversal
         <input type="checkbox" checked={isRandom} onChange={() => setIsRandom(!isRandom)} />
+        <br />
       </label>
+      <br />
     </div>
   );
 };
