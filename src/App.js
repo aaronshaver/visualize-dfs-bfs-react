@@ -4,7 +4,8 @@ import Grid from './components/Grid';
 import Controls from './components/Controls';
 
 function App() {
-  const[gridSize, setGridSize] = useState(21);
+  const defaultSize = 21;
+  const[gridSize, setGridSize] = useState(defaultSize);
   const[algo, setAlgo] = useState('DFS');
   const [gridArray, setGridArray] = useState(Array(gridSize).fill().map(() => Array(gridSize).fill(false)));
   const [isRandom, setIsRandom] = useState(false);
@@ -12,9 +13,20 @@ function App() {
     Array(gridSize).fill().map(() => Array(gridSize).fill(false))
   );
 
-
-  const handleGridChange = (e) => {
-    setGridSize(e.target.value);
+  const handleGridSizeUpdate = (event) => {
+    var newSize = parseInt(event.target.value, 10);
+    if (Number.isInteger(newSize) && newSize > 0) {
+      if (newSize > 69) {
+        newSize = 69;
+        event.target.value = 69;
+      }
+      setGridSize(newSize);
+      const newGrid = Array(newSize).fill().map(() => Array(newSize).fill(false));
+      setGridArray(newGrid);
+    } else {
+      event.target.value = defaultSize;
+      setGridSize(gridSize);
+    }
   };
 
   const handleAlgoChange = (e) => {
@@ -96,7 +108,7 @@ function App() {
   return (
     <div className='App'>
       <Controls
-        handleGridChange={handleGridChange}
+        handleGridSizeUpdate={handleGridSizeUpdate}
         handleAlgoChange={handleAlgoChange}
         handlePlay={handlePlay}
         gridSize={gridSize}
@@ -106,6 +118,16 @@ function App() {
       />
       <Grid gridArray={gridArray} processingArray={processingArray} />
       <br />
+      <p className='p-limited-width'>
+        We don't normally think of an image or a grid of pixels as a graph-like structure. But it can be quite naturally
+        represented as one: each pixel is a node, and each node has 2, 3, or 4 edges connecting it to other pixels.
+        And now that we are thinking of the image as a graph, it becomes clear that search algorithms like depth-first
+        search (DFS) and breadth-first search (BFS) can apply to it.
+      </p>
+      <p className='p-limited-width'>
+        This application helps visualize these search algorithms. All pixels start off as "unvisited". Then, starting
+        from a central origin pixel, we search through -- and mark as visited -- all pixels in the image.
+      </p>
       <p className='p-limited-width'>
         For the "line" DFS implementation, where it has a set order of traversal (e.g. always x+1 first,
         then y+1, etc.), because DFS explores as far as possible before backtracking, the

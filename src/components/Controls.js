@@ -1,11 +1,12 @@
 import React from 'react';
 
 
-const Controls = ({ handleGridChange, handleAlgoChange, handlePlay, gridSize, algo, isRandom, setIsRandom }) => {
+const Controls = ({ handleGridSizeUpdate, handleAlgoChange, handlePlay, gridSize, algo, isRandom, setIsRandom }) => {
   return (
     <div>
       <br />
-      <input type="number" value={gridSize} onChange={handleGridChange} />
+      Size <input type="text" defaultValue={gridSize} onBlur={handleGridSizeUpdate} size="5" />
+      <br />
       <button onClick={handlePlay}>Play</button>
       <br />
       Algorithm
