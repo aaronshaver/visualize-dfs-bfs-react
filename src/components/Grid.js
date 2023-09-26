@@ -4,7 +4,7 @@ const Grid = ({ gridArray }) => {
     for (let i = 0; i < gridArray.length; i++) {
       const row = [];
       for (let j = 0; j < gridArray[i].length; j++) {
-        const color = gridArray[i][j] ? '#98C74E' : '#60A261';
+        const color = gridArray[i][j] === 'processing' ? '#CCF62C' : (gridArray[i][j] ? '#98C74E' : '#60A261');
         row.push(
           <div
             key={`${i}-${j}`}

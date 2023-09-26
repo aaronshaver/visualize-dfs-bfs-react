@@ -8,6 +8,10 @@ function App() {
   const[algo, setAlgo] = useState('DFS');
   const [gridArray, setGridArray] = useState(Array(gridSize).fill().map(() => Array(gridSize).fill(false)));
   const [isRandom, setIsRandom] = useState(false);
+  const [processingArray, setProcessingArray] = useState(
+    Array(gridSize).fill().map(() => Array(gridSize).fill(false))
+  );
+
 
   const handleGridChange = (e) => {
     setGridSize(e.target.value);
@@ -62,22 +66,27 @@ function App() {
     const middle = Math.round((gridSize - 1) / 2)
     depthFirstSearch(clearedGrid, middle, middle, queue);
 
-    // Initialize i outside the processQueue function
     let i = 0;
     function processQueue() {
+      // bail out if we've processed everything
       if (i >= queue.length) {
         return;
       }
 
-      // Use the queue to update the grid
-      const { x, y } = queue[i];
-      clearedGrid[x][y] = true;
-
-      // Update the state to force a re-render
+      // update the grid for 'processing'/highlighted pixel state
+      let { x, y } = queue[i];
+      clearedGrid[x][y] = 'processing';
       setGridArray(JSON.parse(JSON.stringify(clearedGrid)));
 
+      // use a slight delay before setting to true/visited so that the highlight
+      // color remains visible for a short while instead of instantly gone
+      setTimeout(() => {
+        clearedGrid[x][y] = true;
+        setGridArray(JSON.parse(JSON.stringify(clearedGrid)));
+      }, 20);
+
       i++;
-      const delay = 15;
+      const delay = 10; // effectively controls the overall speed of animation
       setTimeout(processQueue, delay);
     }
 
@@ -95,7 +104,7 @@ function App() {
         isRandom={isRandom}
         setIsRandom={setIsRandom}
       />
-      <Grid gridArray={gridArray} />
+      <Grid gridArray={gridArray} processingArray={processingArray} />
       <br />
       <p className='p-limited-width'>
         For the "line" DFS implementation, where it has a set order of traversal (e.g. always x+1 first,
