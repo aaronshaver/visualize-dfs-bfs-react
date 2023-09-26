@@ -4,7 +4,7 @@ import Grid from './components/Grid';
 import Controls from './components/Controls';
 
 function App() {
-  const[gridSize, setGridSize] = useState(31);
+  const[gridSize, setGridSize] = useState(21);
   const[algo, setAlgo] = useState('DFS');
   const [gridArray, setGridArray] = useState(Array(gridSize).fill().map(() => Array(gridSize).fill(false)));
 
@@ -16,7 +16,7 @@ function App() {
     setAlgo(e.target.value);
   };
 
-  const depthFirstSearch = (grid, x, y, queue) => {
+  const depthFirstSearch = (grid, y, x, queue) => {
     // Exit if out of bounds of the image size
     if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length) {
       return;
@@ -29,10 +29,10 @@ function App() {
     // Add to queue for animation later
     queue.push({ x, y });
 
-    depthFirstSearch(grid, x + 1, y, queue);
-    depthFirstSearch(grid, x - 1, y, queue);
-    depthFirstSearch(grid, x, y + 1, queue);
-    depthFirstSearch(grid, x, y - 1, queue);
+    depthFirstSearch(grid, y + 1, x, queue);
+    depthFirstSearch(grid, y - 1, x, queue);
+    depthFirstSearch(grid, y, x + 1, queue);
+    depthFirstSearch(grid, y, x - 1, queue);
   };
 
   const handlePlay = () => {
