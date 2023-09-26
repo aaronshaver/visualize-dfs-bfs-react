@@ -4,7 +4,7 @@ import Grid from './components/Grid';
 import Controls from './components/Controls';
 
 function App() {
-  const defaultSize = 21;
+  const defaultSize = 19;
   const[gridSize, setGridSize] = useState(defaultSize);
   const[algo, setAlgo] = useState('DFS');
   const [gridArray, setGridArray] = useState(Array(gridSize).fill().map(() => Array(gridSize).fill(false)));

@@ -5,11 +5,11 @@ const Controls = ({ handleGridSizeUpdate, handleAlgoChange, handlePlay, gridSize
   return (
     <div>
       <br />
-      Size <input type="text" defaultValue={gridSize} onBlur={handleGridSizeUpdate} size="5" disabled={isProcessing} />
+      Size: <input type="text" defaultValue={gridSize} onBlur={handleGridSizeUpdate} size="5" disabled={isProcessing} />
       <br />
       <button onClick={handlePlay} disabled={isProcessing}>Play</button>
       <br />
-      Algorithm
+      Algorithm:
       <label>
         <input type="radio" value="DFS" checked={algo === 'DFS'} onChange={handleAlgoChange} disabled={isProcessing} />
         DFS
@@ -20,7 +20,7 @@ const Controls = ({ handleGridSizeUpdate, handleAlgoChange, handlePlay, gridSize
       </label>
       <br />
       <label>
-        Random traversal vs. set neighbor order
+        Random traversal vs. fixed neighbor order:
         <input type="checkbox" checked={isRandom} onChange={() => setIsRandom(!isRandom)} disabled={isProcessing} />
         <br />
       </label>
