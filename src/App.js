@@ -71,6 +71,8 @@ function App() {
       { dy: 0, dx: 1 },
       { dy: 0, dx: -1 },
     ];
+    // I don't know why, but we need two shuffles; was seeing patterns if this
+    // shuffle weren't present; makes no sense, but I wasn't able to debug it
     if (isRandom) {
       shuffleArray(directions);
     }
