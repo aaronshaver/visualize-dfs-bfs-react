@@ -1,11 +1,13 @@
 import React from 'react';
 
 
-const Controls = ({ handleGridSizeUpdate, handleAlgoChange, handlePlay, gridSize, algo, isRandom, setIsRandom, isProcessing }) => {
+const Controls = ({ handleGridSizeUpdate, handleSpeedUpdate, handleAlgoChange, handlePlay, gridSize, algo, isRandom, setIsRandom, isProcessing, defaultSpeed }) => {
   return (
     <div className="ControlsWrapper" style={{ textAlign: 'left' }}>
       <br />
       Size: <input type="text" defaultValue={gridSize} onBlur={handleGridSizeUpdate} size="4" disabled={isProcessing} />
+      <br />
+      Speed: <input type="text" defaultValue={defaultSpeed} onBlur={handleSpeedUpdate} size="4" disabled={isProcessing} />
       <br />
       Algorithm:
       <label>

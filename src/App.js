@@ -5,7 +5,9 @@ import Controls from './components/Controls';
 
 function App() {
   const defaultSize = 15;
+  const defaultSpeed = 10;
   const[gridSize, setGridSize] = useState(defaultSize);
+  const[speed, setSpeed] = useState(defaultSpeed);
   const[algo, setAlgo] = useState('DFS');
   const [gridArray, setGridArray] = useState(Array(gridSize).fill().map(() => Array(gridSize).fill(false)));
   const [isRandom, setIsRandom] = useState(false);
@@ -30,15 +32,29 @@ function App() {
     }
   };
 
+  const handleSpeedUpdate = (event) => {
+    var newSpeed = parseInt(event.target.value, 10);
+    if (Number.isInteger(newSpeed) && newSpeed > 0) {
+      if (newSpeed > 5000) {
+        newSpeed = 5000;
+        event.target.value = 5000;
+      }
+      setSpeed(newSpeed);
+    } else {
+      event.target.value = defaultSpeed;
+      setSpeed(defaultSpeed);
+    }
+  };
+
   const handleAlgoChange = (e) => {
     setAlgo(e.target.value);
   };
 
-
   // shuffles an array (in our case, of neighbor-finding functions)
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+      const randomVal = Math.floor(Math.random() * (i + 1));
+      const j = randomVal;
       [array[i], array[j]] = [array[j], array[i]];
     }
   }
@@ -49,20 +65,27 @@ function App() {
 
     visited[y][x] = true;
 
+    const directions = [
+      { dy: 1, dx: 0 },
+      { dy: -1, dx: 0 },
+      { dy: 0, dx: 1 },
+      { dy: 0, dx: -1 },
+    ];
+    if (isRandom) {
+      shuffleArray(directions);
+    }
+
     while (toVisit.length > 0) {
       const current = toVisit.shift(); // Take the first element
       y = current.y;
       x = current.x;
 
-      // Push current position to the queue for later visualization
+      // push current position to the queue for later visualization
       queue.push(current);
 
-      const directions = [
-        { dy: 1, dx: 0 },
-        { dy: -1, dx: 0 },
-        { dy: 0, dx: 1 },
-        { dy: 0, dx: -1 },
-      ];
+      if (isRandom) {
+        shuffleArray(directions);
+      }
 
       for (const { dy, dx } of directions) {
         const newY = y + dy;
@@ -136,10 +159,10 @@ function App() {
       setTimeout(() => {
         clearedGrid[x][y] = true;
         setGridArray(JSON.parse(JSON.stringify(clearedGrid)));
-      }, 20);
+      }, speed * 2);
 
       i++;
-      const delay = 10; // effectively controls the overall speed of animation
+      const delay = speed; // effectively controls the overall speed of animation
       setTimeout(processQueue, delay);
     }
 
@@ -157,6 +180,8 @@ function App() {
         isRandom={isRandom}
         setIsRandom={setIsRandom}
         isProcessing={isProcessing}
+        defaultSpeed={defaultSpeed}
+        handleSpeedUpdate={handleSpeedUpdate}
       />
       <Grid gridArray={gridArray} processingArray={processingArray} />
       <br />
@@ -189,7 +214,12 @@ function App() {
         a jump once we return back to an earlier layer of the stack. It's a little hard to explain in text,
         easier to visualize with graphics.
       </p>
-
+      <p className='p-limited-width'>
+      If you're using BFS with random traversal enabled, it won't look hugely random. This is because all neighbors from
+      a given point are explored before moving to the next set of neighbors, unlike DFS, so it makes a diamond shape.
+      But if you slow the speed down enough on a large grid, you should see randomness in the order of how the edges are
+      filled out between runs if you look closely.
+      </p>
     </div>
   );
 }
