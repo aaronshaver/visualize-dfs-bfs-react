@@ -2,7 +2,11 @@
 
 This is a web app I built for fun, using JavaScript and React, which animates depth-first search and breadth-first search algorithms as they act on a "graph" of pixels.
 
-**Features:**
+## Screenshot
+
+![image](dfs_random_screenshot.png)
+
+## Features
 
 - Resize the grid to custom sizes
 - Set a custom animation speed (in milliseconds per visit/pixel update)
