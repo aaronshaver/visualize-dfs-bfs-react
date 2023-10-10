@@ -161,7 +161,7 @@ function App() {
       setTimeout(() => {
         clearedGrid[x][y] = true;
         setGridArray(JSON.parse(JSON.stringify(clearedGrid)));
-      }, speed * 2);
+      }, speed);
 
       i++;
       const delay = speed; // effectively controls the overall speed of animation
